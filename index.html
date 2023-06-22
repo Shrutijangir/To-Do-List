@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 400px;
+      margin: 20px auto;
+      background-color: #f4f4f4;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background-color: lightblue; /* Add background color */
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    
+    .todo-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .todo-item input[type="checkbox"] {
+      margin-right: 10px;
+    }
+    
+    .todo-item .task {
+      flex-grow: 1;
+    }
+    
+    .red {
+      color: red;
+    }
+    
+    .green {
+      color: green;
+    }
+    
+    .blue {
+      color: blue;
+    }
+
+    .delete-btn {
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>To-Do List</h1>
+    <input type="text" id="taskInput" placeholder="Add a task...">
+    <ul id="taskList"></ul>
+  </div>
+
+  <script>
+    // Function to add a new task
+    function addTask() {
+      var taskInput = document.getElementById("taskInput");
+      var taskList = document.getElementById("taskList");
+      var taskText = taskInput.value.trim();
+      
+      if (taskText !== "") {
+        var listItem = document.createElement("li");
+        var checkbox = document.createElement("input");
+        var taskLabel = document.createElement("label");
+        var deleteButton = document.createElement("span");
+        
+        checkbox.type = "checkbox";
+        taskLabel.textContent = taskText;
+        deleteButton.className = "delete-btn";
+        deleteButton.textContent = "X";
+        
+        listItem.className = "todo-item";
+        listItem.appendChild(checkbox);
+        listItem.appendChild(taskLabel);
+        listItem.appendChild(deleteButton);
+        
+        taskList.appendChild(listItem);
+        taskInput.value = "";
+      }
+    }
+    
+    // Add task when Enter key is pressed
+    document.getElementById("taskInput").addEventListener("keypress", function (event) {
+      if (event.keyCode === 13) {
+        addTask();
+      }
+    });
+    
+    // Change task color on checkbox click
+    document.getElementById("taskList").addEventListener("click", function (event) {
+      if (event.target.tagName === "INPUT" && event.target.type === "checkbox") {
+        var taskLabel = event.target.nextSibling;
+        
+        if (event.target.checked) {
+          taskLabel.classList.add(getRandomColor());
+        } else {
+          taskLabel.classList.remove("red", "green", "blue");
+        }
+      }
+    });
+    
+    // Delete task when delete button is clicked
+    document.getElementById("taskList").addEventListener("click", function (event) {
+      if (event.target.classList.contains("delete-btn")) {
+        var listItem = event.target.parentNode;
+        listItem.parentNode.removeChild(listItem);
+      }
+    });
+    
+    // Generate a random color class name
+    function getRandomColor() {
+      var colors = ["red", "green", "blue"];
+      var randomIndex = Math.floor(Math.random() * colors.length);
+      return colors[randomIndex];
+    }
+  </script>
+</body>
+</html>
